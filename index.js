@@ -1,24 +1,26 @@
-const { GPT } = require("openai");
+const openai = require("openai");
 
-const apiKey = "";
-const prompt = "Escreva sua mensagem ou prompt aqui.";
+// Configuração da sua chave de API
+const openaiApiKey = "SUA_CHAVE_DE_API";
 
-const gpt = new GPT({
-  apiKey: apiKey,
-});
-
-async function main() {
+async function iniciarConversa() {
   try {
-    const response = await gpt.createCompletion({
-      engine: "text-davinci-003",
-      prompt: prompt,
-      maxTokens: 50, // Número máximo de tokens de resposta
-    });
+    const resposta = await openai.Completion.create(
+      {
+        engine: "text-davinci-003", // ou 'text-davinci' para GPT-3.5
+        prompt:
+          "Traduza o seguinte texto para francês: Eu sou um bom programador!",
+        max_tokens: 150, // Tamanho máximo da resposta
+        temperature: 0.7, // Temperatura da amostra (0 a 1)
+        stop: "\n", // Pára na nova linha
+      },
+      { apiKey: openaiApiKey }
+    );
 
-    console.log("Resposta do GPT-3:", response.data.choices[0].text.trim());
+    console.log(resposta.data.choices[0].text.trim());
   } catch (error) {
-    console.error("Erro ao fazer a solicitação para a API do GPT-3:", error);
+    console.error("Erro ao iniciar a conversa:", error);
   }
 }
 
-main();
+iniciarConversa();
